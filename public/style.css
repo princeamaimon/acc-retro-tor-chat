@@ -1,0 +1,144 @@
+* {
+    color: #00FF00;
+    background: #000000;
+    font: 16px 'Press Start 2P', display;
+}
+
+body {
+    color: #00FF00;
+}
+
+.header {
+    color: #00FF00;
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    margin-top: 40px;
+    font: 16px 'Press Start 2P';
+}
+
+.container {
+    font: 16px 'Press Start 2P', display;
+    width: 80%;
+    padding: 10px 10px 10px 10px; 
+    spacing: 10px 10px 10px 10px; 
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.handle_channel_container {
+    margin-bottom: 10px;
+    height: 20px;
+}
+
+.message {
+    margin-bottom: 10px;
+}
+
+.handle {
+    float:left; 
+    text-align:left;
+    padding:5px 5px 5px 5px;
+}
+
+.channel {
+    float:right;
+    text-align:right;
+    padding:5px 5px 5px 5px;
+}
+
+.timestamp {
+    float:right;
+    text-align:right;
+    padding:5px 5px 5px 5px;
+}
+
+.transmission_header {
+    height:35px;
+    display:block;
+    width:100%;
+    border-width:0px 0px 1px 0px;
+    border-color:green;
+    border-style:dashed;
+}
+
+.transmission_text {
+    margin:10px 10px 10px 10px;
+}
+
+.share_channel {
+    float:right; 
+    width:150px; 
+    font: 8px 'Press Start 2P', display;
+} 
+
+.shift_enter {
+    background-color: #111111;
+    font: 8px 'Press Start 2P', display;
+    color: #00FF00;
+}
+
+.transmit_message {
+    border: 1px solid green;
+    width: 400px;
+    margin: 0 auto;
+}
+
+.button {
+    border: 1px solid green;
+    background-color: #111111;
+    color: #00FF00;
+    padding: 10px 10px 10px 10px; 
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    width: 400px;
+    margin: 0 auto;
+}
+
+textarea {
+    border: 1px solid green;
+    width: 98%;
+    outline: none !important;
+    height: 100px;
+    padding: 10px 10px 10px 10px; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+form input {
+    border: 0;
+}
+
+ul {
+    margin: auto;
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#messages {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background: #000000;
+}
+
+#messages li {
+    padding: 10px;
+    border-width: 1px 1px 1px 1px;
+    margin: 10px 10px 10px 10px;
+}
+
+.log_handle {
+    float:left;padding:5px 5px 5px 5px;
+}
+
+.log_timestamp {
+    float:right;
+    padding:5px 5px 5px 5px;
+}

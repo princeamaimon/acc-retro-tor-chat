@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Anonymous Communications Console</title>
+    <link rel="stylesheet" type="text/css" href="Press+Start+2P.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="jquery-3.0.0.slim.min.js"></script>
+    <script src="utils.js"></script>
+</head>
+
+<body>
+
+    <div class="header">
+        Anonymous Communications Console:<br/>
+        ---------------------------------
+    </div>
+
+    <div class="container"> 
+        <form id="console">
+            <div class="handle_channel_container">
+                <div class="handle">
+                    Handle: <input id="handle" name="handle" size="15" disabled />
+                </div>
+                <div class="channel">
+                    Channel: <input id="channel" name="channel" size="15" disabled />
+                </div>
+            </div>
+            <div class="message">
+                <textarea id="text" placeholder="enter message here..."></textarea>
+                <a id="share" class="share_channel" href="" target="_blank">share channel</a>
+            </div>
+            <div class="transmit_message">
+                <button class="button">Transmit Message<!--<br/><div class="shift_enter">&lt;shift-enter&gt;</div>--></button>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        Transmission Log:<br/>
+        -----------------
+        <ul id="messages">
+        </ul>
+    </div>
+
+    <script>
+
+        //var host = "www.xxx.yyy.zzz";
+        //var host = "[hostname].onion";
+
+        var ws_port = 8081;
+        var app_port = 2600;
+        
+        var websocket = null;
+
+        function init() {
+
+            websocket = new WebSocket("ws://"+host+":"+ws_port+"/?channel="+$('#channel').val());
+
+            websocket.onmessage = function(event) {
+                var message = JSON.parse(event.data);
+                message.text = $('<span>'+message.text+'</span>').text() 
+                message.text = message.text.replace(/(?:\r\n|\r|\n)/g, '<br />');
+                var html = '<div class="transmission_header">' +
+                           '    <div class="handle">' + 
+                                     message.handle + ':</div>' + 
+                           '    <div class="timestamp">' + 
+                                     message.timestamp + 
+                           '    </div>' +
+                           '</div>'
+                html += '<div class="transmission_text">' + message.text + '</div>'
+                $('#messages').prepend($('<li>').html(html));
+            };
+
+            websocket.onerror = function(evt) {
+                var message = null;
+                if(websocket.readyState == WebSocket.CLOSED) { 
+                    message = "disconnected.";
+                } else {
+                    message = "websocket readyState: " + websocket.readyState;
+                }
+                var html = '<div class="transmission_header">' +
+                           '    <div class="handle">' + 
+                           '         SYSTEM:</div>' + 
+                           '    <div class="timestamp">' +
+                                     timestamp() +
+                           '    </div>' +
+                           '</div>'
+                html += '<div class="transmission_text">'+message+'</div>'
+                $('#messages').prepend($('<li>').html(html));
+            };
+
+        }
+
+        $(document).ready(function() {
+
+            $('#handle').val('anon-' + guid());
+
+            var channel = $_GET('channel');
+            $('#handle').val('anon-' + guid());
+            if(channel) {
+                $('#channel').val(channel);
+            } else {
+                $('#channel').val('rnd-' + guid());
+            }
+
+            init();
+
+            $("#share").attr("href", "http://"+host+":"+app_port+"/?channel="+$('#channel').val());
+
+            $('#console #text').keydown(function(event) {
+                 if (event.keyCode == 13 && event.shiftKey) {
+                     $('#console').submit();
+                     return false;
+                 }
+            });
+
+            $('form').submit(function() {
+                var message = {
+                    handle: $('#handle').val(),
+                    channel: $('#channel').val(),
+                    timestamp: timestamp(),
+                    text: $('#text').val()
+                }
+                var jsonMessage = JSON.stringify(message);
+                websocket.send(jsonMessage);
+                $('#text').focus();
+                $('#text').val('');
+                return false;
+            });
+
+            function check_connection() {
+                if(websocket.readyState == WebSocket.CLOSED) {
+                    console.log("lost connection / attempting to reconnect...");
+                    init();
+                }
+            }
+
+            var myTimer = setInterval(check_connection, 1000);
+
+        });
+
+    </script>
+
+</body>
+
+
+</html>
